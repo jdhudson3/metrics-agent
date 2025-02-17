@@ -73,7 +73,7 @@ jobs:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
-            ghcr.io/jdhudson3/metrics-agent:1.0.1
+            ghcr.io/jdhudson3/metrics-agent:${{ env.VERSION }}
             ghcr.io/jdhudson3/metrics-agent:latest
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
