@@ -70,8 +70,8 @@ jobs:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
-            jdhudson3/metrics-agent:5.0.0
-            jdhudson3/metrics-agent:latest
+            ghcr.io/jdhudson3/metrics-agent:1.0.0
+            ghcr.io/jdhudson3/metrics-agent:latest
             ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
