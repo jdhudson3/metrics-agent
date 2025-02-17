@@ -62,7 +62,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
       - name: Set variables
         run: |
-          VER=$(make release-version)
+          VER=$(sed -nE 's/^var[[:space:]]VERSION[[:space:]]=[[:space:]]"([^"]+)".*/\1/p' version/version.go)
           echo "VERSION=$VER" >> $GITHUB_ENV
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
