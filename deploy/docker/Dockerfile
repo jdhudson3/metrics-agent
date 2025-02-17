@@ -1,6 +1,6 @@
 ARG golang_version
 
-FROM golang:${golang_version} as build-env
+FROM golang:1.17 as build-env
 ARG package
 ARG application
 
