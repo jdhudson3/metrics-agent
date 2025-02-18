@@ -13,7 +13,7 @@ ENV GOOS=linux
 COPY . /go/src/${package}
 RUN go build
 
-FROM alpine:3.15
+FROM public.ecr.aws/docker/library/alpine:3
 ARG package
 ARG application
 
