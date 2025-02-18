@@ -79,8 +79,28 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           file: ./deploy/docker/Dockerfile
-          platforms: linux/arm64/v8,linux/amd64
+          platforms: linux/amd64
           build-args: |
             golang_version=1.17
             package=github.com/jdhudson3/metrics-agent
             application=metrics-agent
+
+      - name: Build and push ARM Docker image
+        id: build-and-push-arm
+        uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
+        with:
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: |
+            ghcr.io/jdhudson3/metrics-agent:${{ env.VERSION }}
+            ghcr.io/jdhudson3/metrics-agent:latest
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          file: ./deploy/docker/Dockerfile
+          platforms: linux/arm64/v8
+          build-args: |
+            golang_version=1.17
+            package=github.com/jdhudson3/metrics-agent
+            application=metrics-agent
+
