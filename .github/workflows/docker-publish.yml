@@ -79,7 +79,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           file: ./deploy/docker/Dockerfile
-          platforms: linux/arm/v7,linux/arm64/v8,linux/amd64
+          platforms: linux/arm64/v8,linux/amd64
           build-args: |
             golang_version=1.17
             package=github.com/jdhudson3/metrics-agent
