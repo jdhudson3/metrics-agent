@@ -1,6 +1,6 @@
 ARG golang_version
 
-FROM golang:1.17 as build-env
+FROM public.ecr.aws/docker/library/golang:1.17 as build-env
 ARG package
 ARG application
 
