@@ -2,9 +2,11 @@ package k8s
 
 import (
 	"bufio"
-	"encoding/json"
 	"errors"
+	"fmt"
+	"github.com/golang/protobuf/proto"
 	"os"
+	"reflect"
 	"time"
 
 	v1apps "k8s.io/api/apps/v1"
@@ -101,12 +103,13 @@ func writeK8sResourceFile(workDir *os.File, resourceName string,
 			k8Resource = sanitizeData(k8Resource)
 		}
 
-		data, err := json.Marshal(k8Resource)
+		data, err := serializeData(k8Resource)
 
 		if err != nil {
 			return errors.New("error: unable to marshal resource: " + resourceName)
 		}
-		_, err = datawriter.WriteString(string(data) + "\n")
+		data = append(data, []byte("\n")...)
+		_, err = datawriter.Write(data)
 		if err != nil {
 			return errors.New("error: unable to write resource to file: " + resourceName)
 		}
@@ -122,6 +125,51 @@ func writeK8sResourceFile(workDir *os.File, resourceName string,
 	}
 
 	return err
+}
+
+func serializeData(to interface{}) ([]byte, error) {
+	switch to.(type) {
+	case *corev1.Pod:
+		cast := to.(*corev1.Pod)
+		return proto.Marshal(cast)
+	case *v1apps.DaemonSet:
+		cast := to.(*v1apps.DaemonSet)
+		return proto.Marshal(cast)
+	case *v1apps.ReplicaSet:
+		cast := to.(*v1apps.ReplicaSet)
+		return proto.Marshal(cast)
+	case *v1apps.Deployment:
+		cast := to.(*v1apps.Deployment)
+		return proto.Marshal(cast)
+	case *v1batch.Job:
+		cast := to.(*v1batch.Job)
+		return proto.Marshal(cast)
+	case *v1batch.CronJob:
+		cast := to.(*v1batch.CronJob)
+		return proto.Marshal(cast)
+	case *corev1.Service:
+		cast := to.(*corev1.Service)
+		return proto.Marshal(cast)
+	case *corev1.ReplicationController:
+		cast := to.(*corev1.ReplicationController)
+		return proto.Marshal(cast)
+	case *corev1.Namespace:
+		cast := to.(*corev1.Namespace)
+		return proto.Marshal(cast)
+	case *corev1.PersistentVolume:
+		cast := to.(*corev1.PersistentVolume)
+		return proto.Marshal(cast)
+	case *corev1.PersistentVolumeClaim:
+		cast := to.(*corev1.PersistentVolumeClaim)
+		return proto.Marshal(cast)
+	case *corev1.Node:
+		cast := to.(*corev1.Node)
+		return proto.Marshal(cast)
+	default:
+		strType := reflect.TypeOf(to)
+		return []byte{}, fmt.Errorf("invalid object %s", strType)
+	}
+
 }
 
 // nolint: gocyclo
