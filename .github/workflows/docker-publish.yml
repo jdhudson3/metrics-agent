@@ -81,7 +81,7 @@ jobs:
           file: ./deploy/docker/Dockerfile
           platforms: linux/amd64, linux/arm64/v8
           build-args: |
-            golang_version=1.21
+            golang_version=1.22
             package=github.com/jdhudson3/metrics-agent
             application=metrics-agent
 
