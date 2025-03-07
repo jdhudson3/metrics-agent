@@ -90,7 +90,7 @@ func GetK8sMetricsFromInformer(informers map[string]*cache.SharedIndexInformer,
 func writeK8sResourceFile(workDir *os.File, resourceName string,
 	resourceList []interface{}, parseMetricData bool) (rerr error) {
 
-	file, err := os.OpenFile(workDir.Name()+"/"+resourceName+".jsonl",
+	file, err := os.OpenFile(workDir.Name()+"/"+resourceName+".proto",
 		os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		return errors.New("error: unable to create kubernetes metric file")
@@ -113,6 +113,7 @@ func writeK8sResourceFile(workDir *os.File, resourceName string,
 		if err != nil {
 			return errors.New("error: unable to write resource to file: " + resourceName)
 		}
+
 	}
 
 	err = datawriter.Flush()
